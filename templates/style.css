@@ -4,7 +4,7 @@ header {
 }
 
 main {
-	background-image: url(images/fond.jpeg);
+	background-image: url(../images/fond.jpeg);
 	background-size: cover;
 	background-position-x: center;
 }
