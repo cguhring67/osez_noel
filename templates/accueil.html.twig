@@ -1,0 +1,38 @@
+{% extends 'layout_normal.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block page_contents %}
+    <div class="text-center">
+        <h2>
+            Découvrez nos calendriers de l’avent numériques
+            afin de plonger dans la magie de Noël !
+        </h2>
+        
+        <div class="row align-items-start mb-3">
+            <div class="col-md-4">
+                <img src="{{ asset('images/calendrier_1.png') }}" class="img-fluid shadow" alt="Exemple calendrier 1">
+            </div>
+            <div class="col-md-4">
+                <img src="{{ asset('images/calendrier_2.png') }}" class="img-fluid shadow" alt="Exemple calendrier 2">
+            </div>
+            <div class="col-md-4">
+                <img src="{{ asset('images/calendrier_3.png') }}" class="img-fluid shadow" alt="Exemple calendrier 3">
+            </div>
+        </div>
+        
+        <p class="fs-3 mt-4 open-sans-light paragraphe-titre">
+            Sur notre site, vous pouvez créer un calendrier de l’avent
+            personnalisé, et l’envoyer en cadeau à vos amis.
+        </p>
+        <p class="fs-4 open-sans-bolditalic">
+            C’est facile et gratuit grâce notre module de création en ligne.
+        </p>
+        <p class="fs-6 open-sans-regular">
+            Vous y trouverez des modèles déjà prêts que vous pourrez modifier, ainsi que des ressources
+            pour ajouter des surprises. Ou ajoutez vos propres images, musiques et vidéos !
+        </p>
+        
+        <a href="#" class="btn btn-success rounded-pill my-4 px-5 fs-5 open-sans-bold shadow" aria-current="page">Je commence la création</a>
+    </div>
+{% endblock %}

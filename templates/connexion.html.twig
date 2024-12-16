@@ -1,0 +1,63 @@
+{% extends 'layout_normal.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block page_contents %}
+    <form action="#" method="post">
+        
+        <div class="row align-items-start mb-3">
+            <div class="col-md-6 px-5">
+                <h2 class="text-center">
+                    J'ai déjà un compte
+                </h2>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email :</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="Email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe :</label>
+                    <input type="password" class="form-control" id="password" aria-describedby="Mot de passe">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="se_souvenir">
+                    <label class="form-check-label" for="se_souvenir">
+                        Se souvenir de moi
+                    </label>
+                </div>
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-success rounded-pill my-4 px-5 fs-5 open-sans-bold shadow">S'identifier</button>
+                </div>
+            
+            </div>
+            
+            <div class="col-md-6 px-5  border-start border-light border-opacity-25">
+                <h2 class="text-center">
+                    Je crée mon compte
+                </h2>
+                
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom :</label>
+                    <input type="text" class="form-control" id="nom" aria-describedby="Nom">
+                </div>
+                <div class="mb-3">
+                    <label for="prenom" class="form-label">Prenom :</label>
+                    <input type="text" class="form-control" id="prenom" aria-describedby="Prenom">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email :</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="Email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe :</label>
+                    <input type="password" class="form-control" id="password" aria-describedby="Mot de passe">
+                </div>
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-success rounded-pill my-4 px-5 fs-5 open-sans-bold shadow">S'enregistrer</button>
+                </div>
+            
+            </div>
+        </div>
+    
+    </form>
+{% endblock %}

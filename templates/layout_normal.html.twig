@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+   <div class="row align-items-start ">
+      <div class="col-xxl-8 offset-xxl-2 col-xl-10 offset-xl-1 col-lg-12 px-4 px-md-4 px-lg-5 px-xl-0">
+         <div class="card px-2 py-2 carte-transparente">
+            <div class="card-body">
+               {% block page_contents %}{% endblock %}
+            </div>
+         </div>
+      </div>
+   </div>
+{% endblock %}
