@@ -10,10 +10,20 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AccueilController extends AbstractController
 {
+
 	#[Route('/', name: 'accueil')]
 	public function render_accueil(): Response
 	{
 
 		return $this->render('accueil.html.twig');
 	}
+
+
+	#[Route('/contact', name: 'contact')]
+	public function render_contact(): Response
+	{
+
+		return $this->render('contact.html.twig');
+	}
+
 }

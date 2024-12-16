@@ -7,7 +7,7 @@ header, .bg-header {
 }
 
 main {
-	background-image: url(../images/fond.jpeg);
+	background-image: url(/images/fond.jpeg);
 	background-size: cover;
 	background-position-x: center;
 }
@@ -22,7 +22,7 @@ header *, footer *, main * {
 }
 
 .paragraphe-titre {
-	line-height: 1.15;
+	line-height: 1.2;
 }
 
 .carte-transparente {
@@ -68,4 +68,39 @@ header *, footer *, main * {
 	font-family: "Open Sans", sans-serif;
 	font-weight: 700;
 	font-style: italic;
+}
+
+h2 {
+	font-family: "Oleo Script Swash Caps", system-ui;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 2.5rem;
+	line-height: 1.15;
+	margin-bottom: 1.5rem;
+	color: #79FF94;
+	text-shadow: 2px 2px 7px #000000;
+}
+
+h3 {
+	font-family: "Open Sans", sans-serif;
+	font-weight: 700;
+	font-style: normal;
+	font-size: 1.5rem;
+	margin-top: 2rem;
+	margin-bottom: 0.5rem;
+	color: var(--bs-primary-text-emphasis);
+}
+
+h4 {
+	font-family: "Open Sans", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 1.2rem;
+	margin-top: 0;
+	margin-bottom: 1rem;
+	color: #79FF94;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+	background-color: rgba(13, 110, 253, 0.35);
 }

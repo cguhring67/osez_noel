@@ -1,0 +1,57 @@
+{% extends 'layout_sidebar.html.twig' %}
+
+{% block title %}Mes informations{% endblock %}
+
+{% macro sidebarItem(name, url, icone) %}
+    {% set currentUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+    {% set isActive = currentUrl == url %}
+    
+    <li class="nav-item mb-3">
+        <a href="{{ url }}" class="icon-link nav-link {% if isActive %}active{% endif %} px-4 fs-5">{{ ux_icon(icone, {height: '16px', width: '16px'}) }} &nbsp; {{ name }}</a>
+    </li>
+{% endmacro %}
+
+
+{% block sidebar_contents %}
+    <div class="text-center">
+        <h2>
+            Mon compte
+        </h2>
+        
+        <ul class="nav nav-pills mb-2">
+            {{ _self.sidebarItem('Mes calendriers', path('mon_compte'), 'fa6-solid:calendar-days') }}
+            {{ _self.sidebarItem('Nouveau calendrier', path('nouveau_calendrier'), 'fa6-solid:pen') }}
+            {{ _self.sidebarItem('Mes informations', path('mes_informations'), 'fa6-solid:user') }}
+        </ul>
+        
+    </div>
+{% endblock %}
+
+{% block page_contents %}
+    <form action="#" method="post">
+        
+        <div class="row align-items-start mb-3">
+            <div class="col-md-12 px-5">
+                <h2 class="text-center">
+                    {{ block('title') }}
+                </h2>
+                
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Votre Nom :</label>
+                    <input type="text" class="form-control" name="nom" id="nom" aria-describedby="Nom">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Votre Email :</label>
+                    <input type="email" class="form-control" name="email" id="email" aria-describedby="Email">
+                </div>
+                <p class="text-center text-warning">Veuillez noter que pour le moment, ce formulaire ne fonctionne pas.</p>
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-success rounded-pill my-4 px-5 fs-5 open-sans-bold shadow">Envoyer</button>
+                </div>
+            
+            </div>
+        
+        </div>
+    
+    </form>
+{% endblock %}
