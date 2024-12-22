@@ -11,7 +11,6 @@
    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Open+Sans:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
    
    <link rel="stylesheet" href="/css/bootstrap.min.css">
-   <link rel="stylesheet" href="/css/style.css">
    
    {% block stylesheets %}
    {% endblock %}
@@ -19,6 +18,7 @@
    {% block javascripts %}
       {% block importmap %}{{ importmap('app') }}{% endblock %}
    {% endblock %}
+   <link rel="stylesheet" href="/css/style.css">
 </head>
 
 
@@ -33,17 +33,19 @@
 
 
 <body>
-<div class="container-xl">
-   
-   <nav class="navbar navbar-expand-lg bg-header my-0">
+
+{% block modals %}{% endblock %}
+
+
+   <nav class="header navbar navbar-expand-lg bg-header my-0">
       <div class="container-fluid">
          <a class="navbar-brand" href="{{ path('accueil') }}">
-            <img src="{{ asset('images/logo_osez_noel.png') }}" alt="Logo Osez Noël">
+            <img src="{{ asset('images/logo_osez_noel.png') }}" alt="Logo Osez Noël" class=" position-absolute top-0 ms-3 mt-2">
          </a>
-         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
          </button>
-         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+         <div class="collapse navbar-collapse mt-5 mt-lg-0" id="navbarToggler">
             
             <ul class="navbar-nav nav-pills ms-auto me-3 mb-2 mb-lg-0">
                <span class="navbar-text nav-link text-body-secondary px-4 fs-5">Bienvenue, visiteur !</span>
@@ -68,15 +70,18 @@
    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-0 text-light">
       
       <ul class="nav nav-pills  col-md-12 justify-content-center">
-         <li class="nav-item"><span class="nav-link text-body-secondary px-3">© 2024 Osez Noel EURL</span></li>
+         <li class="nav-item align-middle pt-1"><span class="nav-link text-body-secondary px-3">© 2024 Osez Noel EURL</span></li>
          {{ _self.menuItem('Mentions légales', path('mentions_legales')) }}
          {{ _self.menuItem('Politique de confidentialité', path('confidentialite')) }}
          {{ _self.menuItem('Contact', path('contact')) }}
       </ul>
    </footer>
-</div>
 
 <script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+<script src="/js/script.js"></script>
+
+{% block scripts_supp %}{% endblock %}
 
 </body>
 
