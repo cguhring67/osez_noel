@@ -71,7 +71,8 @@ document.addEventListener('click', function (event) {
     {
         target_modal = 'modale_large';
         modale_titre.text("Choisir un thème");
-        $('#modale_description').text("Cliquez sur un thème au choix pour l'appliquer. Vous pourrez ensuite personnaliser les couleurs.");
+        // $('#modale_description').text("Cliquez sur un thème au choix pour l'appliquer. Vous pourrez ensuite personnaliser les couleurs.");
+        $('#modale_description').html("<b>Le choix du thème ne fonctionne pas encore.</b> Vous pouvez toujours choisir une image de fond et personnaliser les couleurs.");
         $images_grid.empty();
         $images_grid.empty();
         $images_grid.append($('#images_themes').html());

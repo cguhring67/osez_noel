@@ -22,7 +22,6 @@ class ListefichiersController extends AbstractController
 
 		if (is_dir($directory))
 		{
-			dump($directory);
 			foreach (scandir($directory) as $file)
 			{
 				if (pathinfo($file, PATHINFO_EXTENSION) === 'jpg' || pathinfo($file, PATHINFO_EXTENSION) === 'jpeg' || pathinfo($file, PATHINFO_EXTENSION) === 'png')
@@ -48,7 +47,6 @@ class ListefichiersController extends AbstractController
 
 		if (is_dir($directory))
 		{
-			dump($directory);
 			foreach (scandir($directory) as $file)
 			{
 				if (pathinfo($file, PATHINFO_EXTENSION) === 'jpg' || pathinfo($file, PATHINFO_EXTENSION) === 'jpeg' || pathinfo($file, PATHINFO_EXTENSION) === 'png')
