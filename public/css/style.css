@@ -146,7 +146,7 @@ h4 {
 
 
 
-.modal-content {
+.modal-content, .offcanvas {
 	backdrop-filter: blur(10px);
 }
 
@@ -155,7 +155,7 @@ h4 {
 	font-weight: 700;
 }
 
-.modal .modal-content {
+.modal .modal-content, .offcanvas {
 	background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -199,7 +199,17 @@ div#fond_calendrier {
 	border-radius: 10px;
 }
 
+#image_choisie {
+	max-width: 90%;
+	max-height: 80vh;
+}
 
+.offcanvas-body .col-7 {
+	text-align: right;
+}
+.offcanvas-body  {
+	font-size: 1.2rem;
+}
 
 @media (min-width: 992px) {
 	.colonne_liens_calendrier {

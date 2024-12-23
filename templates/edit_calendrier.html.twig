@@ -30,11 +30,11 @@
                 </div>
                 
                 <ul class="nav nav-pills mb-2">
-                    {{ _self.sidebarItem('fluent-emoji:books', 'Choisir un theme', 'choix_theme', '#modale_theme') }}
-                    {{ _self.sidebarItem('emojione:artist-palette', 'Modifier les couleurs', 'choix_couleurs', '#modaleLarge') }}
-                    {{ _self.sidebarItem('fluent-emoji:national-park', 'Choisir un arrière-plan', 'choix_fond', '#modaleLarge') }}
-                    {{ _self.sidebarItem('bi:share-fill', 'Partager', 'partager', '#modaleLarge') }}
-                    {{ _self.sidebarItem('iconoir:trash-solid', 'Supprimer', 'supprimer', 'mt-lg-5 fw-bold lien_supprimer', '#modale_supprimer') }}
+                    {{ _self.sidebarItem('fluent-emoji:books', 'Choisir un theme', 'choix_theme') }}
+                    {{ _self.sidebarItem('fluent-emoji:national-park', 'Choisir un arrière-plan', 'choix_fond') }}
+                    {{ _self.sidebarItem('emojione:artist-palette', 'Personnaliser', 'choix_couleurs') }}
+                    {{ _self.sidebarItem('bi:share-fill', 'Partager', 'partager') }}
+                    {{ _self.sidebarItem('iconoir:trash-solid', 'Supprimer', 'supprimer', 'mt-lg-5 fw-bold lien_supprimer') }}
                 </ul>
                 
             </div>
@@ -71,9 +71,9 @@
                                 }
                                 
                                 .cal_case:hover {
-                                    fill: rgba(0,0,0,0.8);
-                                    stroke-width: 5;
-                                    stroke: rgba(255,255,255,1);
+                                    fill: rgba(0,0,0,0.8) !important;
+                                    stroke-width: 5 !important;
+                                    stroke: rgba(255,255,255,1) !important;
                                     transform: scale(1.05);
                                 }
                                 
@@ -129,286 +129,24 @@
 
 {% block scripts_supp %}
     
-    <script src="/js/masonry.pkgd.min.js"></script>
     
     <script>
-        
-        var $grid = $('#surprises_grid');
-        
         var tenor_api_key = '{{ tenor_api_key }}';
-        var tenor_client_key = 'osez_noel2';
-        var tenor_limit = 25;
-        var tenor_next = "";
-        var tenor_current_url = "";
-        var tenor_current_search = "";
-        var ajaxready = true;
-        
-        var tenor_base_url = "https://tenor.googleapis.com";
-        var featured_url = tenor_base_url + "/v2/featured?key=" + tenor_api_key + "&client_key=" + tenor_client_key + "&limit=" + tenor_limit + "&country=FR&locale=fr_FR&media_filter=gif,tinygif&contentfilter=high";
-        var categories_url = tenor_base_url + "/v2/categories?key=" + tenor_api_key + "&client_key=" + tenor_client_key + "&country=FR&locale=fr_FR";
-        var search_url = tenor_base_url + "/v2/search?key=" + tenor_api_key + "&client_key=" + tenor_client_key + "&limit=" + tenor_limit + "&country=FR&locale=fr_FR&media_filter=gif,tinygif&contentfilter=high";
-        var suggestions_url = tenor_base_url + "/v2/search_suggestions?key=" + tenor_api_key + "&client_key=" + tenor_client_key + "&limit=3&country=FR&locale=fr_FR";
-        
-        document.addEventListener('click', function (event) {
-            let id_element = event.target.id;
-            let target_modal;
-            var modale_titre = $('#modale_titre');
-            var modale_contenu = $('#modale_body');
-            
-            if (event.target.matches('rect'))
-            {
-                let id_case;
-                if (id_element.startsWith('case-'))
-                {
-                    id_case = id_element.substring(5);
-                }
-                
-                target_modal = 'modale_surprise';
-                $('#modale_surprise_titre').text("Choisir une surprise pour le " + id_case + " décembre");
-                
-                tenor_current_search = "Noël";
-                $('#tenor_search').val(tenor_current_search);
-                tenor_search();
-                
-            }
-            else if (event.target.matches('img'))
-            {
-                let image_url = event.target.getAttribute('data-imageUrl');
-                console.log(image_url);
-                if (image_url != "")
-                {
-                    $('#image_choisie').attr("src", image_url);
-                    target_modal = 'modale_image';
-                }
-            }
-            else if (id_element == 'choix_theme')
-            {
-                target_modal = 'modale_large';
-                modale_titre.text("Choisir un thème");
-                modale_contenu.text("Cliquez sur un thème au choix pour l'appliquer. Vous pourrez ensuite personnaliser les couleurs.");
-            }
-            else if (id_element == 'choix_couleurs')
-            {
-                target_modal = 'modale_large';
-                modale_titre.text("Choisir les couleurs du calendrier");
-                modale_contenu.text("Vous pouvez personnaliser la couleur de fond des cases, la bordure, ainsi que la police et la couleur du numéro de jour.");
-            }
-            else if (id_element == 'choix_fond')
-            {
-                target_modal = 'modale_large';
-                modale_titre.text("Choisir une image d'arrière-plan");
-                modale_contenu.text("Vous pouvez personnaliser l'image d'arrière-plan du calendrier. Vous avez également la possibilité d'envoyer une photo de votre choix.");
-            }
-            else if (id_element == 'partager')
-            {
-                target_modal = 'modale_partage';
-            }
-            
-            else if (id_element == 'supprimer')
-            {
-                target_modal = 'modale_supprimer';
-            }
-            
-            if (target_modal != undefined)
-            {
-                var myModal = new bootstrap.Modal(document.getElementById(target_modal), {});
-                myModal.show();
-            }
-            
-        }, false);
-        
-        
-        
-        
-        // function to call the featured and category endpoints
-        function tenor_featured()
-        {
-            $grid.empty();
-            $grid.append( '<h4 class="mt-4">GIFs à la une sur Tenor</h4>' );
-            tenor_current_url = featured_url;
-            $('#tenor_search').val('');
-            
-            
-            $.get(featured_url, function(data)
-            {
-                featured_gifs = data.results;
-                tenor_next = data.next;
-                
-                console.log(data);
-                
-                for (var i = 0; i < featured_gifs.length; i++)
-                {
-                    var featured_gif = featured_gifs[i];
-                    var previmgurl = featured_gif["media_formats"]["tinygif"]["url"];
-                    var imgurl = featured_gif["media_formats"]["gif"]["url"];
-                    var description = featured_gif.content_description;
-                    
-                    var $items = $('<img src="'+ previmgurl +'" alt="'+ description +'" data-imageUrl="'+imgurl+'" style="height: 200px" class="p-2">');
-                    // append items to grid
-                    $grid.append( $items );
-                    
-                }
-                
-            });
-        }
-        
-        // function to call the featured and category endpoints
-        function tenor_search()
-        {
-            var $search_suggestions = $('#search_suggestions');
-            $search_suggestions.empty();
-            $grid.empty();
-            $grid.append( '<h4 class="mt-4">Résultats de recherche pour " ' + tenor_current_search + ' "</h4>' );
-            tenor_current_search = $('#tenor_search').val();
-            search_url += "&q=" + tenor_current_search;
-            suggestions_url += "&q=" + tenor_current_search;
-            tenor_current_url = search_url;
-            
-            $.get(suggestions_url, function(data)
-            {
-                search_terms = data.results;
-                
-                console.log(search_terms);
-                
-                for (var i = 0; i < search_terms.length; i++)
-                {
-                    var current_search_term = search_terms[i];
-                    console.log(current_search_term);
-                    
-                    var $button = $('<a href="javascript:search_term(\''+current_search_term+'\')" class="btn btn-primary mx-2">'+current_search_term+'</a>');
-                    $search_suggestions.append( $button );
-                }
-            });
-            
-            
-            $.get(search_url, function(data)
-            {
-                search_gifs = data.results;
-                tenor_next = data.next;
-                
-                console.log(search_gifs);
-                
-                for (var i = 0; i < search_gifs.length; i++)
-                {
-                    var current_gif = search_gifs[i];
-                    var previmgurl = current_gif["media_formats"]["tinygif"]["url"];
-                    var imgurl = current_gif["media_formats"]["gif"]["url"];
-                    var description = current_gif.content_description;
-                    
-                    var $items = $('<img src="'+ previmgurl +'" alt="'+ description +'" data-imageUrl="'+imgurl+'" style="height: 200px" class="p-2">');
-                    $grid.append( $items );
-                }
-            });
-        }
-        
-       
-        
-        function tenor_categories()
-        {
-            $grid.empty();
-            $grid.append( '<h4 class="mt-4">Catégories de GIFs sur Tenor</h4>' );
-            $('#tenor_search').val('');
-            tenor_next = '';
-            
-            
-            $.get(categories_url, function(data)
-            {
-                categories = data.tags;
-                
-                console.log(categories);
-                
-                for (var i = 0; i < categories.length; i++)
-                {
-                    var categorie = categories[i];
-                    console.log(categorie);
-                    var imgurl = categorie.image;
-                    var txt_overlay = categorie.name;
-                    var search_term = categorie.searchterm;
-                    
-                    var $items = $('<a href="javascript:search_term(\''+search_term+'\')" class="category_link">' +
-                          '<img src="'+ imgurl +'" alt="'+ txt_overlay +'" style="height: 200px" class="p-2">' +
-                          '<div class="centered">'+ txt_overlay +'</div>' +
-                          '</a>');
-                    // append items to grid
-                    $grid.append( $items );
-                    
-                }
-            });
-        }
-        
-        function search_term(search_term)
-        {
-            tenor_current_search = search_term;
-            $('#tenor_search').val(search_term);
-            tenor_search();
-        }
-        
-        
-        // SUPPORT FUNCTIONS ABOVE
-        // MAIN BELOW
-        
-        $("#tenor_featured").on("click", function() {
-            tenor_featured();
-        });
-        
-        $("#tenor_categories").on("click", function() {
-            tenor_categories();
-        });
-        
-        $("#tenor_search").on("input", function() {
-            tenor_current_search = $('#tenor_search').val();
-            if (tenor_current_search != '') tenor_search();
-        });
-        
-        
-        
-        // start the flow
-        
-        $('#modale_surprise_body').bind('scroll', function()
-        {
-            if (ajaxready == false) return;
-            
-            console.log("scrollTop : " + $(this).scrollTop());
-            console.log("innerHeight : " + $(this).innerHeight());
-            console.log("scrollTop + innerHeight : " + ($(this).scrollTop() + $(this).innerHeight()));
-            
-            console.log("scrollHeight : " + $(this)[0].scrollHeight);
-            if($(this).scrollTop() + $(this).innerHeight() + 250 >= $(this)[0].scrollHeight)
-            {
-                if (tenor_next != "")
-                {
-                    ajaxready = false;
-                    $.get(tenor_current_url + '&pos=' + tenor_next, function(data)
-                    {
-                        search_gifs = data.results;
-                        tenor_next = data.next;
-                        
-                        console.log(search_gifs);
-                        
-                        for (var i = 0; i < search_gifs.length; i++)
-                        {
-                            var current_gif = search_gifs[i];
-                            var previmgurl = current_gif["media_formats"]["tinygif"]["url"];
-                            var imgurl = current_gif["media_formats"]["gif"]["url"];
-                            var description = current_gif.content_description;
-                            
-                            var $items = $('<img src="'+ previmgurl +'" alt="'+ description +'" data-imageUrl="'+imgurl+'" style="height: 200px" class="p-2">');
-                            $grid.append( $items );
-                        }
-                        ajaxready = true;
-                        
-                    });
-                }
-            }
-        });
-        
     </script>
 
+    <script src="/js/script.js"></script>
 
 {% endblock %} {# // bloc scripts #}
 
 
 {% block modals %}
+    
+    <div class="visually-hidden" id="images_fond">
+    </div>
+    
+    <div class="visually-hidden" id="images_themes">
+    </div>
+    
     
     <!-- Modal -->
     <div class="modal fade" id="modale_large" tabindex="-1" aria-labelledby="modale_titre" aria-hidden="true">
@@ -418,7 +156,11 @@
                     <h1 class="modal-title fs-5" id="modale_titre">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modale_body">
+                <div class="modal-body text-center" id="modale_body">
+                    <h4 id="modale_description">Contenu</h4>
+                    <div class="grid" id="images_grid">
+                    </div>
+                
                 </div>
             </div>
         </div>
@@ -485,15 +227,144 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center" id="modale_surprise_body">
-                    <img src="" id="image_choisie" alt="" class="my-4">
+                    <img src="" id="image_choisie" alt="" class="my-4 max-w-100">
                     <p>
                         <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Retour</button>
-                        <button type="button" class="btn btn-success mx-2">Valider</button>
+                        <button type="button" id="bouton_valider_image" class="btn btn-success mx-2">Valider</button>
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    
+    
+    
+    
+    <div class="offcanvas offcanvas-start shadow3" id="offcanvas_images" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h4 class="offcanvas-title" id="offcanvas_titre">Titre</h4>
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="grid" id="offcanvas_images_grid">
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    <div class="offcanvas offcanvas-start shadow3" id="personnalisation_cases" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h4 class="offcanvas-title" id="offcanvasScrollingLabel">Personnaliser les cases</h4>
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            
+            <div class="row mb-2">
+                <div class="col-7">
+                    <label for="couleur_fond" class="form-label">Couleur du fond</label>
+                </div>
+                <div class="col-5">
+                    <input type="color" id="couleur_fond" class="form-control" value="#000000">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-7">
+                    <label for="opacite_fond" class="form-label">Opacité</label>
+                </div>
+                <div class="col-5">
+                    <input type="range" class="form-range" id="opacite_fond" min="0" max="1" step="0.1">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-7">
+                    <label for="couleur_bordure" class="form-label">Couleur de la bordure</label>
+                </div>
+                <div class="col-5">
+                    <input type="color" id="couleur_bordure" class="form-control" value="#000000">
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-7">
+                    <label for="opacite_bordure" class="form-label">Opacité</label>
+                </div>
+                <div class="col-5">
+                    <input type="range" class="form-range" id="opacite_bordure" min="0" max="1" step="0.1">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-7">
+                    <label for="epaisseur_bordure" class="form-label">Epaisseur</label>
+                </div>
+                <div class="col-5">
+                    <input type="range" class="form-range" id="epaisseur_bordure" min="0" max="8" step="1">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-7">
+                    <label for="couleur_texte" class="form-label">Couleur du texte</label>
+                </div>
+                <div class="col-5">
+                    <input type="color" id="couleur_texte" class="form-control" value="#000000">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-7">
+                    <label for="opacite_texte" class="form-label">Opacité</label>
+                </div>
+                <div class="col-5">
+                    <input type="range" class="form-range" id="opacite_texte" min="0" max="1" step="0.1">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-7">
+                    <label for="couleur_bordure_texte" class="form-label">Bordure du texte</label>
+                </div>
+                <div class="col-5">
+                    <input type="color" id="couleur_bordure_texte" class="form-control" value="#000000">
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-7">
+                    <label for="opacite_bordure_texte" class="form-label">Opacité</label>
+                </div>
+                <div class="col-5">
+                    <input type="range" class="form-range" id="opacite_bordure_texte" min="0" max="1" step="0.1">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-7">
+                    <label for="epaisseur_bordure_texte" class="form-label">Epaisseur</label>
+                </div>
+                <div class="col-5">
+                    <input type="range" class="form-range" id="epaisseur_bordure_texte" min="0" max="8" step="1">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-7">
+                    <label class="form-label" for="choix_police">Police de caractères</label>
+                </div>
+                <div class="col-5">
+                    <select class="form-select" id="choix_police">
+                        <option selected value="Open Sans Extrabold">Open Sans</option>
+                        <option value="Calibri, Arial, sans_serif">Calibri</option>
+                        <option value="Comic Sans MS">Comic Sans</option>
+                        <option value="Oleo Script Swash Caps">Oleo Script</option>
+                        <option value="Times New Roman, times, serif">Times New Roman</option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    
+    
+    
     
     
     
