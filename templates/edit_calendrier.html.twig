@@ -151,7 +151,6 @@
         
         document.addEventListener('click', function (event) {
             let id_element = event.target.id;
-            console.log(event.target);
             let target_modal;
             var modale_titre = $('#modale_titre');
             var modale_contenu = $('#modale_body');
@@ -171,6 +170,16 @@
                 $('#tenor_search').val(tenor_current_search);
                 tenor_search();
                 
+            }
+            else if (event.target.matches('img'))
+            {
+                let image_url = event.target.getAttribute('data-imageUrl');
+                console.log(image_url);
+                if (image_url != "")
+                {
+                    $('#image_choisie').attr("src", image_url);
+                    target_modal = 'modale_image';
+                }
             }
             else if (id_element == 'choix_theme')
             {
@@ -467,19 +476,19 @@
     </div>
     
     
-    <!-- Modale surprise -->
+    <!-- Modale image -->
     <div class="modal fade" id="modale_image" tabindex="-1" aria-labelledby="modale_image_titre" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered ">
+        <div class="modal-dialog modal-xl modal-dialog-centered ">
             <div class="modal-content shadow3">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modale_surprise_titre">Aperçu de l'image choisie</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center" id="modale_surprise_body">
-                    <img src="" id="image_choisie" alt="">
+                    <img src="" id="image_choisie" alt="" class="my-4">
                     <p>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Retour</button>
-                        <button type="button" class="btn btn-danger">Valider</button>
+                        <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Retour</button>
+                        <button type="button" class="btn btn-success mx-2">Valider</button>
                     </p>
                 </div>
             </div>
