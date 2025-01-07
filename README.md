@@ -25,7 +25,7 @@ interactivité, et accessibilité tout en respectant les bonnes pratiques du dé
 - JS (Jquery) 
 
 2. **Back :**
-- PHP 8.2 
+- PHP 8.2
 - Symfony 7.3
 - MariaDB
 - MongoDB
