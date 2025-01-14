@@ -1,5 +1,7 @@
+@use 'sass:color';
 @import "typography";
 @import "variables";
+
 
 nav.header {
 }
@@ -46,7 +48,7 @@ div.carte-transparente {
 	border: 0;
 	border-radius: 15px;
 	box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(5px);
+	backdrop-filter: $backdrop_blur1;
 }
 
 .form-control {
@@ -93,35 +95,37 @@ h4 {
 	color: $vert;
 }
 
-.nav-pills .nav-link {
-	color: rgb(255, 255, 255);
+.nav-pills {
+
+	.nav-link {
+		color: rgb(255, 255, 255);
+
+		&.lien_supprimer {
+			background-color: color.change($rouge, $lightness: 20%, $alpha: 50%);
+			color: $rouge;
+
+			&:hover {
+				color: rgb(255, 144, 156) !important;
+				background-color: rgba(100, 0, 0, 0.6);
+				box-shadow: 0 0 15px 5px rgba(128, 0, 0, 0.5) ;
+			}
+		}
+
+		&.active, .show > .nav-link {
+			background-color: color.change($primary, $lightness: 52%, $alpha: 35%);
+		}
+
+		&:hover {
+			color: $primary;
+		}
+
+	}
+
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-	background-color: rgba(13, 110, 253, 0.35);
-}
-
-.nav-pills .nav-link:hover {
-	color: $primary;
-}
 
 #partager {
 	margin-right: 100px;
-}
-.nav-pills .nav-link.lien_supprimer {
-	background-color: rgba(80, 0, 0, 0.5);
-	color: rgb(220, 53, 69);
-}
-.nav-pills .lien_supprimer:hover {
-	color: rgb(255, 144, 156) !important;
-	background-color: rgba(100, 0, 0, 0.6);
-	box-shadow: 0 0 15px 5px rgba(128, 0, 0, 0.5) ;
-}
-
-
-
-.modal-content, .offcanvas {
-	backdrop-filter: blur(10px);
 }
 
 
@@ -131,18 +135,24 @@ h4 {
 
 .modal .modal-content, .offcanvas {
 	background-color: rgba(0, 0, 0, 0.7);
+	backdrop-filter: $backdrop_blur2;
 }
 
-#modale_large .modal-title, #modale_partage .modal-title {
-	color: $vert;
+#modale_large, #modale_partage {
+	.modal-title {
+		color: $vert;
+	}
 }
 
-#modale_supprimer .modal-content, #modale_supprimer .modal-header {
-	border-color: rgba(255, 0, 0, 0.5);
-}
+#modale_supprimer {
+	.modal-content, .modal-header {
+		border-color: color.change($rouge, $alpha: 50%);
+	}
 
-#modale_supprimer .modal-content {
-	background-color: rgba(40, 0, 0, 0.7);
+	.modal-content {
+		//background-color: rgba(40, 0, 0, 0.7);
+		background-color: color.change($rouge, $lightness: 10%, $alpha: 70%);
+	}
 }
 
 .modal-dialog-scrollable .modal-content {
@@ -178,11 +188,11 @@ div#fond_calendrier {
 	max-height: 80vh;
 }
 
-.offcanvas-body .col-7 {
-	text-align: right;
-}
 .offcanvas-body  {
 	font-size: 1.2rem;
+	.col-7 {
+		text-align: right;
+	}
 }
 
 @media (min-width: 992px) {
@@ -194,6 +204,5 @@ div#fond_calendrier {
 	.colonne_calendrier {
 		flex: 1 1 auto;
 	}
-
 
 }
