@@ -1,0 +1,41 @@
+{% extends 'layout_normal.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block page_contents %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    
+    <div class="row mb-3 justify-content-center">
+        <div class="col-md-8 px-5 ">
+            
+            <h2 class="text-center">
+                Je crée mon compte
+            </h2>
+            
+            <h5 class="text-center mb-5">
+                Vous avez déjà un compte ?<br>Rendez-vous sur la page <a href="{{ path('app_login') }}">de connexion</a> pour vous connecter !
+            </h5>
+            
+            {{ form_errors(registrationForm) }}
+        
+            {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+            
+            {{ form_row(registrationForm.nom) }}
+            {{ form_row(registrationForm.prenom) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.password) }}
+            
+            {#   {{ form_row(registrationForm.agreeTerms) }}  #}
+            
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-success rounded-pill my-4 px-5 fs-5 open-sans-bold shadow">S'enregistrer</button>
+            </div>
+        
+        
+            {{ form_end(registrationForm) }}
+    
+        </div>
+    </div>
+{% endblock %}

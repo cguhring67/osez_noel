@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\MesInfosFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MoncompteController extends AbstractController
@@ -18,7 +24,7 @@ class MoncompteController extends AbstractController
 		return $this->render('mon_compte.html.twig');
 	}
 
-	#[Route('/nouveau_calendrier', name: 'nouveau_calendrier')]
+	#[Route('/mon_compte/nouveau_calendrier', name: 'nouveau_calendrier')]
 	public function render_nouveau_calendrier(): Response
 	{
 
@@ -26,10 +32,33 @@ class MoncompteController extends AbstractController
 	}
 
 	#[Route('/mes_informations', name: 'mes_informations')]
-	public function render_mes_informations(): Response
+	public function render_mes_informations(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
 	{
 
-		return $this->render('mes_informations.html.twig');
+		$user = $this->getUser();
+		$form = $this->createForm(MesInfosFormType::class, $user);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			/** @var string $plainPassword */
+			$plainPassword = $form->get('password')->getData();
+			if ($plainPassword !== null) {
+				// encode the plain password
+				$user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+			}
+
+			$entityManager->persist($user);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Vos nouvelles informations ont bien été enregistrées !');
+			return $this->redirectToRoute('mes_informations');
+
+		}
+
+		return $this->render('mes_informations.html.twig', [
+			'mesInfosForm' => $form,
+		]);
 	}
 
 }

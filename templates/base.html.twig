@@ -46,16 +46,22 @@
             <span class="navbar-toggler-icon"></span>
          </button>
          <div class="collapse navbar-collapse mt-5 mt-lg-0" id="navbarToggler">
+            {% if app.user %}
+                {% set nom_utilisateur = app.user.prenom %}
+            {% else %}
+                {% set nom_utilisateur = "visiteur" %}
+            {% endif %}
             
             <ul class="navbar-nav nav-pills ms-auto me-3 mb-2 mb-lg-0">
-               <span class="navbar-text nav-link text-body-secondary px-4 fs-5">Bienvenue, visiteur !</span>
+               <span class="navbar-text nav-link text-body-secondary px-4 fs-5">Bienvenue, {{ nom_utilisateur }} !</span>
                {{ _self.menuItem('Accueil', path('accueil')) }}
                
-               {% if 1 %} {# user.isLoggedIn #}
+               {% if app.user %} {# user.isLoggedIn #}
                   {{ _self.menuItem('Mon compte', path('mon_compte')) }}
-                  {{ _self.menuItem('Se déconnecter', path('connexion')) }}
+                  {{ _self.menuItem('Se déconnecter', path('app_logout')) }}
                {% else %}
-                  {{ _self.menuItem('Connexion / Inscription', path('connexion')) }}
+                  {{ _self.menuItem('Connexion', path('app_login')) }}
+                  {{ _self.menuItem('Inscription', path('app_register')) }}
                {% endif %}
 
             </ul>

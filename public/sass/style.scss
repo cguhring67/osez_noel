@@ -55,6 +55,11 @@ div.carte-transparente {
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
+label.required:before {
+	content: "* ";
+	color: red;
+}
+
 .shadow, .shadow2 {
 	box-shadow: 2px 2px 12px 4px rgba(0, 0, 0, 0.6);
 }
