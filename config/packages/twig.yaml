@@ -3,6 +3,7 @@ twig:
     globals:
         tenor_api_key: '%env(TENOR_API)%'
     form_themes: ['bootstrap_5_layout.html.twig']
+    cache: false
 when@test:
     twig:
         strict_variables: true
