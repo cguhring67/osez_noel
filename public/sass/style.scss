@@ -200,6 +200,57 @@ div#fond_calendrier {
 	}
 }
 
+a.lien-calendrier {
+	color: color.change($primary, $lightness: 80%);
+	&:hover {
+		color: $primary;
+	}
+}
+
+
+div.carte-transparente.carte-calendrier p.nom_calendrier {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 75px;
+	font-weight: 700;
+	background-color: rgba(0, 0, 0, 0.7);
+	padding: 50px 20px;
+	border-radius: 50px;
+	backdrop-filter: $backdrop_blur1;
+}
+
+div.carte-transparente.carte-plus {
+
+	svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+	}
+	text {
+
+		font-family: 'Open Sans Extrabold', sans-serif;
+		font-size: 27px;
+		font-weight: 700;
+		&.plus {
+			font-size: 200px;
+		}
+	}
+
+	a {
+		color: color.change($primary, $lightness: 80%);
+		&:hover {
+			color: $primary;
+		}
+	}
+}
+
+div.carte-transparente.card {
+	border-radius: 0;
+	border: 0;
+}
+
+
 @media (min-width: 992px) {
 	.colonne_liens_calendrier {
 		flex: 0 0 auto;

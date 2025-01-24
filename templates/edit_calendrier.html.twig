@@ -17,17 +17,19 @@
             <div class="colonne_liens_calendrier col-md-12 col-lg-4">
             
                 <h4 class="text-center">
-                    Nouveau calendrier
+                    Création d'un calendrier
                 </h4>
                 
                 <div class="mb-3">
-                    <label for="nom_calendrier" class="form-label">Nom du calendrier :</label>
-                    <input type="text" class="form-control" name="nom_calendrier" id="nom_calendrier" aria-describedby="Nom calendrier">
+                    <label for="nom_calendrier" class="form-label">Nom du calendrier : ( <small>{{ calendrier.token() }}</small> )</label>
+                    <input type="text" class="form-control" name="nom_calendrier" id="nom_calendrier" aria-describedby="Nom calendrier" value="{{ calendrier.nomCalendrier() }}">
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">{{ ux_icon('mdi:chat-processing-outline', {height: '20px', width: '20px'}) }} &nbsp; Votre message :</label>
-                    <input type="text" class="form-control" name="message" id="message" aria-describedby="Message">
+                    <input type="text" class="form-control" name="message" id="message" aria-describedby="Message" value="{{ calendrier.message() }}">
                 </div>
+                
+                <input type="hidden" class="form-control" name="token" id="token" value="{{ calendrier.token() }}">
                 
                 <ul class="nav nav-pills mb-2">
                     {{ _self.sidebarItem('fluent-emoji:books', 'Choisir un theme', 'choix_theme') }}
@@ -63,29 +65,34 @@
                             
                             <style>
                                 .cal_case {
-                                    fill: rgba(0,0,0,0.5);
-                                    stroke-width: 1;
-                                    stroke: rgba(255,255,255,0.5);
+                                    fill: {{ calendrier.caseCouleurFond }};
+                                    fill-opacity: {{ calendrier.caseOpacite }};
+                                    stroke: {{ calendrier.caseBordureCouleur}};
+                                    stroke-width: {{ calendrier.caseBordureEpaisseur }};
+                                    stroke-opacity: {{ calendrier.caseBordureOpacite }};
                                     transition: all .3s ease;
                                     cursor: pointer;
                                 }
                                 
                                 .cal_case:hover {
-                                    fill: rgba(0,0,0,0.8) !important;
+                                    {#fill: {{ calendrier.caseCouleurFond }} !important;#}
                                     fill-opacity: 1 !important;
-                                    stroke-width: 5 !important;
-                                    stroke: rgba(255,255,255,1) !important;
+                                    stroke-width: 6 !important;
+                                    {#stroke: {{ calendrier.caseBordureCouleur }} !important;#}
                                     stroke-opacity: 1 !important;
-                                    transform: scale(1.05);
+                                    transform: scale(1.1);
+                                    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.9));
                                 }
                                 
                                 .cal_numero {
                                     font-family: 'Open Sans Extrabold', sans-serif;
                                     font-size: 75px;
                                     font-weight: 700;
-                                    fill: white;
-                                    stroke: black;
-                                    stroke-width: 2;
+                                    fill: {{ calendrier.texteCouleur }};
+                                    fill-opacity: {{ calendrier.texteOpacite }};
+                                    stroke: {{ calendrier.texteBordureCouleur }};
+                                    stroke-width: {{ calendrier.texteBordureEpaisseur }};
+                                    stroke-opacity: {{ calendrier.texteBordureOpacite }};
                                     filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.9));
                                     pointer-events: none;
                                 }
@@ -242,7 +249,7 @@
     
     
     
-    <div class="offcanvas offcanvas-start shadow3" id="offcanvas_images" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas offcanvas-start shadow3" id="offcanvas_images" tabindex="-1" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
             <h4 class="offcanvas-title" id="offcanvas_titre">Titre</h4>
             <button type="button" class="btn-close" aria-label="Close"></button>
@@ -258,7 +265,7 @@
     
     
     
-    <div class="offcanvas offcanvas-start shadow3" id="personnalisation_cases" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas offcanvas-start shadow3" id="personnalisation_cases" tabindex="-1" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
             <h4 class="offcanvas-title" id="offcanvasScrollingLabel">Personnaliser les cases</h4>
             <button type="button" class="btn-close" aria-label="Close"></button>
@@ -270,7 +277,7 @@
                     <label for="couleur_fond" class="form-label">Couleur du fond</label>
                 </div>
                 <div class="col-5">
-                    <input type="color" id="couleur_fond" class="form-control" value="#000000">
+                    <input type="color" id="couleur_fond" class="form-control" value="{{ calendrier.caseCouleurFond }}">
                 </div>
             </div>
             <div class="row mb-4">
@@ -278,7 +285,7 @@
                     <label for="opacite_fond" class="form-label">Opacité</label>
                 </div>
                 <div class="col-5">
-                    <input type="range" class="form-range" id="opacite_fond" min="0" max="1" step="0.1">
+                    <input type="range" class="form-range" id="opacite_fond" min="0" max="1" step="0.1"  value="{{ calendrier.caseOpacite }}">
                 </div>
             </div>
             <div class="row mb-2">
@@ -286,7 +293,7 @@
                     <label for="couleur_bordure" class="form-label">Couleur de la bordure</label>
                 </div>
                 <div class="col-5">
-                    <input type="color" id="couleur_bordure" class="form-control" value="#000000">
+                    <input type="color" id="couleur_bordure" class="form-control"  value="{{ calendrier.caseBordureCouleur }}">
                 </div>
             </div>
             <div class="row mb-1">
@@ -294,7 +301,7 @@
                     <label for="opacite_bordure" class="form-label">Opacité</label>
                 </div>
                 <div class="col-5">
-                    <input type="range" class="form-range" id="opacite_bordure" min="0" max="1" step="0.1">
+                    <input type="range" class="form-range" id="opacite_bordure" min="0" max="1" step="0.1" value="{{ calendrier.caseBordureOpacite }}">
                 </div>
             </div>
             <div class="row mb-4">
@@ -302,7 +309,7 @@
                     <label for="epaisseur_bordure" class="form-label">Epaisseur</label>
                 </div>
                 <div class="col-5">
-                    <input type="range" class="form-range" id="epaisseur_bordure" min="0" max="8" step="1">
+                    <input type="range" class="form-range" id="epaisseur_bordure" min="0" max="8" step="1" value="{{ calendrier.caseBordureEpaisseur }}">
                 </div>
             </div>
             <div class="row mb-2">
@@ -310,7 +317,7 @@
                     <label for="couleur_texte" class="form-label">Couleur du texte</label>
                 </div>
                 <div class="col-5">
-                    <input type="color" id="couleur_texte" class="form-control" value="#000000">
+                    <input type="color" id="couleur_texte" class="form-control" value="{{ calendrier.texteCouleur }}">
                 </div>
             </div>
             <div class="row mb-4">
@@ -318,7 +325,7 @@
                     <label for="opacite_texte" class="form-label">Opacité</label>
                 </div>
                 <div class="col-5">
-                    <input type="range" class="form-range" id="opacite_texte" min="0" max="1" step="0.1">
+                    <input type="range" class="form-range" id="opacite_texte" min="0" max="1" step="0.1" value="{{ calendrier.texteOpacite }}">
                 </div>
             </div>
             <div class="row mb-2">
@@ -326,7 +333,7 @@
                     <label for="couleur_bordure_texte" class="form-label">Bordure du texte</label>
                 </div>
                 <div class="col-5">
-                    <input type="color" id="couleur_bordure_texte" class="form-control" value="#000000">
+                    <input type="color" id="couleur_bordure_texte" class="form-control" value="{{ calendrier.texteBordureCouleur }}">
                 </div>
             </div>
             <div class="row mb-1">
@@ -334,7 +341,7 @@
                     <label for="opacite_bordure_texte" class="form-label">Opacité</label>
                 </div>
                 <div class="col-5">
-                    <input type="range" class="form-range" id="opacite_bordure_texte" min="0" max="1" step="0.1">
+                    <input type="range" class="form-range" id="opacite_bordure_texte" min="0" max="1" step="0.1" value="{{ calendrier.texteBordureOpacite }}">
                 </div>
             </div>
             <div class="row mb-4">
@@ -342,7 +349,7 @@
                     <label for="epaisseur_bordure_texte" class="form-label">Epaisseur</label>
                 </div>
                 <div class="col-5">
-                    <input type="range" class="form-range" id="epaisseur_bordure_texte" min="0" max="8" step="1">
+                    <input type="range" class="form-range" id="epaisseur_bordure_texte" min="0" max="8" step="1" value="{{ calendrier.texteBordureEpaisseur }}">
                 </div>
             </div>
             
@@ -351,7 +358,7 @@
                     <label class="form-label" for="choix_police">Police de caractères</label>
                 </div>
                 <div class="col-5">
-                    <select class="form-select" id="choix_police">
+                    <select class="form-select" id="choix_police" value="{{ calendrier.textePolice }}">
                         <option selected value="Open Sans Extrabold">Open Sans</option>
                         <option value="Calibri, Arial, sans_serif">Calibri</option>
                         <option value="Comic Sans MS">Comic Sans</option>
@@ -371,10 +378,7 @@
     
     
     <!-- Modale partage -->
-    
-    {% set uuid = '7332ea4f-6163-471a-ab00-b0188653b433' %}
-    {% set lien = 'https://oseznoel.guhring.ovh/calendrier/' ~ uuid %}
-    {% set qrcode = 'https://oseznoel.guhring.ovh/images/qrcode_' ~ uuid ~ ".png" %}
+    {% set lien = 'https://oseznoel.guhring.ovh/calendrier/' ~ calendrier.token() %}
     
     <div class="modal fade" id="modale_partage" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered ">
@@ -387,7 +391,7 @@
                     <div class="text-center">
                         <p>Voici le lien, et le QR-Code de votre calendrier :</p>
                         <p><a href="{{ lien }}" target="blank">{{ lien }}</a></p>
-                        <p><img src="{{ qrcode }}" class="w-50"></p>
+                        <p><img src="{{ qr_code_url(lien) }}" class="w-50" alt="Qr-code de partage"></p>
                     </div>
                 </div>
             </div>

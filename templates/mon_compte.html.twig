@@ -33,19 +33,111 @@
              Cliquez sur un calendrier pour le modifier, le partager ou le supprimer.
         </h4>
         
-        <div class="row align-items-start mb-3">
+        <div class="row align-items-center mb-3">
+            {% set svg_width = 1200 %}
+            {% set svg_height = 790 %}
+            
+            {% for calendrier in calendriers %}
+                <div class="col-md-6 mb-3">
+            
+                    <div class="carte-transparente carte-calendrier card align-items-center d-flex flex-column justify-content-center ratio" style="--bs-aspect-ratio: 65%;">
+                        <span class=" carte-transparente">
+                            <a href="{{ path('calendrier_edit', {'id': calendrier.id}) }}" class="stretched-link lien-calendrier">
+                                
+                                <svg id="calendrier" width="100%" height="100%" viewBox="0 0 {{ svg_width }} {{ svg_height }}" xmlns="http://www.w3.org/2000/svg">
+                                    
+                                    <defs>
+                                        <filter id="trans-shadow">
+                                            <feDropShadow dx="4" dy="4" stdDeviation="6" flood-opacity="1" />
+                                            <feComposite operator="out" in2="SourceGraphic"/>
+                                        </filter>
+                                        
+                                        <style>
+                                            .cal_case {
+                                                fill: {{ calendrier.caseCouleurFond }};
+                                                fill-opacity: {{ calendrier.caseOpacite }};
+                                                stroke: {{ calendrier.caseBordureCouleur}};
+                                                stroke-width: {{ calendrier.caseBordureEpaisseur }};
+                                                stroke-opacity: {{ calendrier.caseBordureOpacite }};
+                                                transition: all .3s ease;
+                                                cursor: pointer;
+                                            }
+                                            
+                                            .cal_numero {
+                                                font-family: 'Open Sans Extrabold', sans-serif;
+                                                font-size: 75px;
+                                                font-weight: 700;
+                                                fill: {{ calendrier.texteCouleur }};
+                                                fill-opacity: {{ calendrier.texteOpacite }};
+                                                stroke: {{ calendrier.texteBordureCouleur }};
+                                                stroke-width: {{ calendrier.texteBordureEpaisseur }};
+                                                stroke-opacity: {{ calendrier.texteBordureOpacite }};
+                                                filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.9));
+                                                pointer-events: none;
+                                            }
+                                        </style>
+                                    </defs>
+                                    
+                                    <image x="0" y="0" width="100%" height="100%" href="/images/fonds_calendriers/fond_compo_noel_5.jpg" id="cal_image" preserveAspectRatio="xMinYMin slice" />
+                                    
+                                    
+                                    {% set items = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'] %}
+                                    {% set cols = 6 %}
+                                    {% set rows = 4 %}
+                                    {% set margin_pc = 3 %}
+                                    {% set margin_px = (svg_width * margin_pc) / 100 %}
+                                    {% set rect_x = margin_px %}
+                                    {% set rect_y = margin_px %}
+                                    {% set rect_w = (((svg_width * 98) / 100) / cols) - margin_px - (margin_px / cols) %}
+                                    {% set rect_h = (((svg_height * 98) / 100) / rows) - margin_px - (margin_px / rows) %}
+                                    
+                                    {% for row in items|batch(cols) %}
+                                        {% for cell in row %}
+                                            {% set rect_c_x = rect_x + (rect_w / 2) %}
+                                            {% set rect_c_y = rect_y + (rect_h / 2) + 5 %}
+                                            <rect width="{{ rect_w }}" height="{{ rect_h }}" x="{{ rect_x }}" y="{{ rect_y }}" rx="5" ry="5" fill="black" filter="url(#trans-shadow)" />
+                                            <rect width="{{ rect_w }}" height="{{ rect_h }}" x="{{ rect_x }}" y="{{ rect_y }}" rx="5" ry="5" class="cal_case" id="case-{{cell}}" transform-origin="{{ rect_c_x }} {{ rect_c_y }}"/>
+                                            <text x="{{ rect_c_x }}" y="{{ rect_c_y }}" dominant-baseline="middle" text-anchor="middle" class="cal_numero">{{cell}}</text>
+                                            {% set rect_x = rect_x + rect_w + margin_px %}
+                                        {% endfor %}
+                                        {% set rect_x = margin_px %}
+                                        {% set rect_y = rect_y + rect_h + margin_px %}
+                                    {% endfor %}
+                                    
+                                      <foreignObject x="5%" y="29%" width="90%" height="60%">
+                                        <p xmlns="http://www.w3.org/1999/xhtml" class="nom_calendrier">
+                                            {{calendrier.nomCalendrier}}
+                                        </p>
+                                      </foreignObject>
+                                    
+                              </svg>
+                              
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                
+
+            {% else %}
+            
+                <h3 class="fs-5 px-5">Aucun calendrier trouvé !</h3>
+            
+            {% endfor %}
+            
             <div class="col-md-6 mb-3">
-                <span class="fs-5 px-5">Maman</span>
-                <img src="{{ asset('images/calendrier_1.png') }}" class="img-fluid mt-2 shadow2" alt="Exemple calendrier 1">
+                <div class="carte-transparente carte-plus card align-items-center d-flex flex-column justify-content-center ratio" style="--bs-aspect-ratio: 65%;">
+                    <a href="{{ path('nouveau_calendrier') }}" class="stretched-link icon-link">
+                        
+                        <svg viewBox="0 0 500 325" fill="currentColor" aria-hidden="true">
+                            <text x="50%" y="20%" dominant-baseline="middle" text-anchor="middle" class="">Créer un nouveau calendrier</text>
+                            <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" class="plus">+</text>
+                            <rect width="150" height="150" x="175" y="105" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="10" class="carre_plus" id="carre_plus"/>
+                        </svg>
+                    
+                    </a>
+                </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <span class="fs-5 px-5">Papa</span>
-                <img src="{{ asset('images/calendrier_2.png') }}" class="img-fluid mt-2 shadow2" alt="Exemple calendrier 2">
-            </div>
-            <div class="col-md-6 mb-3">
-                <span class="fs-5 px-5">Christophe</span>
-                <img src="{{ asset('images/calendrier_3.png') }}" class="img-fluid mt-2 shadow2" alt="Exemple calendrier 3">
-            </div>
+        
         </div>
         
     </div>

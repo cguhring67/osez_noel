@@ -16,6 +16,12 @@ class CalendrierRepository extends ServiceEntityRepository
         parent::__construct($registry, Calendrier::class);
     }
 
+	public function save(Calendrier $entity): void
+	{
+		$this->getEntityManager()->persist($entity);
+		$this->getEntityManager()->flush();
+	}
+
     //    /**
     //     * @return Calendrier[] Returns an array of Calendrier objects
     //     */

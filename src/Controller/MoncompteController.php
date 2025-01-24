@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\MesInfosFormType;
+use App\Repository\CalendrierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,18 +19,16 @@ class MoncompteController extends AbstractController
 {
 
 	#[Route('/mon_compte', name: 'mon_compte')]
-	public function render_mon_compte(): Response
+	public function render_mon_compte(CalendrierRepository $calendrierRepository): Response
 	{
 
-		return $this->render('mon_compte.html.twig');
+		dump($calendrierRepository->findAll());
+		return $this->render('mon_compte.html.twig',
+		[
+			'calendriers' => $calendrierRepository->findAll(),
+		]);
 	}
 
-	#[Route('/mon_compte/nouveau_calendrier', name: 'nouveau_calendrier')]
-	public function render_nouveau_calendrier(): Response
-	{
-
-		return $this->render('edit_calendrier.html.twig');
-	}
 
 	#[Route('/mes_informations', name: 'mes_informations')]
 	public function render_mes_informations(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CalendrierRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CalendrierRepository::class)]
 class Calendrier
@@ -20,7 +21,7 @@ class Calendrier
 
 
 	#[ORM\Column(length: 50)]
-    private ?string $token = null;
+    private ?string $token = null; //UUID - Token du calendrier
 
     #[ORM\Column(length: 100)]
     private ?string $nom_calendrier = null;
@@ -31,13 +32,13 @@ class Calendrier
     #[ORM\Column(length: 50)]
     private ?string $arriere_plan = null;
 
-    #[ORM\Column(length: 6)]
+    #[ORM\Column(length: 7)]
     private ?string $case_couleur_fond = null;
 
     #[ORM\Column]
     private ?float $case_opacite = null;
 
-    #[ORM\Column(length: 6)]
+    #[ORM\Column(length: 7)]
     private ?string $case_bordure_couleur = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -46,13 +47,13 @@ class Calendrier
     #[ORM\Column]
     private ?float $case_bordure_opacite = null;
 
-    #[ORM\Column(length: 6)]
+    #[ORM\Column(length: 7)]
     private ?string $texte_couleur = null;
 
     #[ORM\Column]
     private ?float $texte_opacite = null;
 
-    #[ORM\Column(length: 6)]
+    #[ORM\Column(length: 7)]
     private ?string $texte_bordure_couleur = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -64,11 +65,34 @@ class Calendrier
     #[ORM\Column(length: 50)]
     private ?string $texte_police = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_creation = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $date_creation = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_modification = null;
+
+	public function __construct()
+	{
+		$this->token = Uuid::v7()->toString();
+		$this->date_creation = new \DateTimeImmutable('now');
+		$this->date_modification = new \DateTime('now');
+		$this->nom_calendrier = "Mon nouveau calendrier";
+		$this->message = "Mon message";
+
+		$this->arriere_plan = "fond_compo_noel_5.jpg";
+		$this->case_couleur_fond = "#000000";
+		$this->case_opacite = "0.5";
+		$this->case_bordure_couleur = "#ffffff";
+		$this->case_bordure_epaisseur = "1";
+		$this->case_bordure_opacite = "0.5";
+		$this->texte_couleur = "#ffffff";
+		$this->texte_opacite = "1";
+		$this->texte_bordure_couleur = "#000000";
+		$this->texte_bordure_epaisseur = "2";
+		$this->texte_bordure_opacite = "1";
+		$this->texte_police = "Open Sans";
+	}
+
 
     public function getId(): ?int
     {
@@ -267,12 +291,12 @@ class Calendrier
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): ?\DateTimeImmutable
     {
         return $this->date_creation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): static
+    public function setDateCreation(\DateTimeImmutable $date_creation): static
     {
         $this->date_creation = $date_creation;
 
